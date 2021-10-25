@@ -1,7 +1,18 @@
 from django.conf.urls import include
 from django.urls import path
-from rest_framework import routers
+from rest_framework import routers, urlpatterns
 from api.views import TaskViewSet, TaskListView, TaskRetrieveView,\
     CreateUserView, PostListView, PostRetrieveView
 
-router
+router = routers.DefaultRouter()
+router.register('tasks', TaskViewSet, basename='tasks')
+
+urlpatterns = [
+    path('list-post/', PostListView.as_view(), name='list-post'),
+    path('detail-post/<str:pk>/', PostRetrieveView.as_view(), name='detail-post'),
+    path('list-talk', TaskListView.as_view(), name='detail-task'),
+    path('detail-task/<str:pk>', TaskRetrieveView.as_view(), name='detail-task'),
+    path('register/', CreateUserView.as_view(), name='register'),
+    path('auth/', include('djoser.urls.jwt')),
+    path('', include(router.urls))
+]
